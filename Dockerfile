@@ -95,12 +95,12 @@ RUN uv pip install -r /comfyui/requirements.txt \
 # which is NEWER than RunPod's GPU drivers support (their L40/A6000 hosts run driver 550 =
 # max CUDA 12.8). cu130 torch -> "NVIDIA driver too old" -> CUDA init fails -> ComfyUI
 # crashes at boot -> serverless workers go UNHEALTHY and never service jobs.
-# Pin the torch stack to a cu128 (CUDA 12.8) build that the drivers DO support. Done as the
-# LAST pip step so nothing re-upgrades it. torchaudio 2.9.1 is the newest cu128 build; it's
-# only used by (unused) audio nodes, so the minor version skew is harmless and ComfyUI
-# tolerates a failed audio-node import. --no-deps keeps these exact self-contained wheels.
-RUN uv pip install --force-reinstall --no-cache-dir --no-deps \
-      torch==2.11.0 torchvision==0.26.0 torchaudio==2.9.1 \
+# Pin the torch stack to a cu128 (CUDA 12.8) build the drivers DO support. Use the newest
+# FULLY version-matched cu128 trio (torch 2.9.1 / torchvision 0.24.1 / torchaudio 2.9.1 — the
+# newest version where all three publish cu128 wheels), installed WITH deps so PyTorch's CUDA
+# runtime libs (libcupti etc.) come along. Done as the LAST pip step so nothing re-upgrades it.
+RUN uv pip install --force-reinstall --no-cache-dir \
+      torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 \
       --index-url https://download.pytorch.org/whl/cu128 \
     && python -c "import torch; print('PINNED torch', torch.__version__, '(expect +cu128)')"
 
