@@ -39,7 +39,6 @@ jobs:
           provenance: false
           sbom: false
           cache-from: type=gha
-          cache-to: type=gha,mode=max
           tags: |
             ghcr.io/bullseyelimited/aigf-comfyui-worker:krea-cu128
             ghcr.io/bullseyelimited/aigf-comfyui-worker:krea-0.26.2
