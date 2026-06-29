@@ -12,3 +12,22 @@ runpod_worker_comfy:
   unet: models/unet/
   diffusion_models: models/diffusion_models/
   text_encoders: models/text_encoders/
+
+# AIGF: the operator's original RO "comfyui" volume stores models under
+# runpod-slim/ComfyUI/models/ (not models/). This second search path lets the SAME
+# image find models on that volume too, so we can use the existing RO volume + 4090
+# with no data copy. ComfyUI merges all top-level configs in this file.
+aigf_ro_volume:
+  base_path: /runpod-volume/runpod-slim/ComfyUI
+  checkpoints: models/checkpoints/
+  clip: models/clip/
+  clip_vision: models/clip_vision/
+  configs: models/configs/
+  controlnet: models/controlnet/
+  embeddings: models/embeddings/
+  loras: models/loras/
+  upscale_models: models/upscale_models/
+  vae: models/vae/
+  unet: models/unet/
+  diffusion_models: models/diffusion_models/
+  text_encoders: models/text_encoders/
